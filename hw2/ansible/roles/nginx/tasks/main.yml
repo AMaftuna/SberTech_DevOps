@@ -1,0 +1,11 @@
+- name: Остановка фоновых процессов обновления
+  shell: |
+    pgrep -f "apt" | xargs -r kill -9
+  become: true
+  ignore_errors: yes
+
+- name: Установка Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes

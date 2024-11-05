@@ -1,0 +1,5 @@
+- name: Deploy and configure Spring Boot application
+  hosts: spring_app
+  roles:
+    - nginx
+    - deploy_app

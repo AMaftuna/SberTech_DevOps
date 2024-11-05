@@ -1,0 +1,17 @@
+- name: Install JDK
+  apt:
+    name: default-jdk
+    state: present
+  become: yes
+
+- name: Clone application repository
+  git:
+    repo: 'file:///app'
+    dest: /opt/spring_app
+    version: master
+  become: yes
+
+- name: Run the application
+  shell: ./mvnw spring-boot:run
+  args:
+    chdir: /opt/spring_app
