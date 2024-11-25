@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "poetry add $(cat requirements-txt)"
+version = "0.1.0"
+description = "pip install pipenv"
+authors = ["pipenv install -r requirements.txt"]
+readme = "README.md"
+packages = [{include = "poetry add $(cat requirements"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
