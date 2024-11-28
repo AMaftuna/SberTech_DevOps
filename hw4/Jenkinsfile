@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-token',
+                    url: 'https://github.com/makhmudovs1/OrderFlow.git'
+            }
+        }
+        stage('Build Backend') {
+            steps {
+                dir('orderflow-backend') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        stage('Test Backend') {
+            steps {
+                dir('orderflow-backend') {
+                    sh 'mvn test'
+                }
+            }
+        }
+        stage('SonarQube') {
+            steps {
+                dir('orderflow-backend') {
+                    withSonarQubeEnv('SonarQube') {
+                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_AUTH_TOKEN')]) {
+                            sh 'mvn sonar:sonar -Dsonar.login=${SONAR_AUTH_TOKEN}'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                dir('orderflow-backend') {
+                    sh 'docker build -t your-app .'
+                    sh 'docker run -d -p 80:80 your-app'
+                }
+            }
+        }
+    }
+}
