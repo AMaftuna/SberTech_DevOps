@@ -1,6 +1,7 @@
-FROM openjdk:11
+FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && \
+    apt-get install -y \
+    pip3 install ansible
 
-WORKDIR /app
-COPY . /app
+WORKDIR /opt/spring_app

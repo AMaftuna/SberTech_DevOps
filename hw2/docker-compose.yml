@@ -15,5 +15,4 @@ services:
     container_name: spring_app
     volumes:
       - ./app:/app
-    working_dir: /app
-    command: ./mvnw spring-boot:run
+    tty: true

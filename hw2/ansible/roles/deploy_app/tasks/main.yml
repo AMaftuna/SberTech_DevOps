@@ -1,14 +1,14 @@
-- name: Install JDK
+- name: Install OpenJDK 17
   apt:
-    name: default-jdk
+    name: openjdk-17-jdk
     state: present
   become: yes
 
 - name: Clone application repository
   git:
-    repo: 'file:///app'
+    repo: 'https://github.com/AMaftuna/app.git'
     dest: /opt/spring_app
-    version: master
+    version: main
   become: yes
 
 - name: Run the application
