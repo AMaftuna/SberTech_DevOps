@@ -1,0 +1,17 @@
+- name: Install OpenJDK 17
+  apt:
+    name: openjdk-17-jdk
+    state: present
+  become: yes
+
+- name: Clone application repository
+  git:
+    repo: 'https://github.com/AMaftuna/app.git'
+    dest: /opt/spring_app
+    version: main
+  become: yes
+
+- name: Run the application
+  shell: ./mvnw spring-boot:run
+  args:
+    chdir: /opt/spring_app

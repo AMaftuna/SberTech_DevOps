@@ -1,0 +1,5 @@
+all:
+  hosts:
+    spring_app:
+      ansible_host: spring_app
+      ansible_connection: docker

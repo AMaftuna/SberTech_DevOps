@@ -1,0 +1,18 @@
+version: '3'
+services:
+  ansible:
+    build:
+      context: ./ansible
+      dockerfile: Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ansible:/ansible
+    tty: true
+
+  app:
+    build:
+      context: ./app
+    container_name: spring_app
+    volumes:
+      - ./app:/app
+    tty: true
