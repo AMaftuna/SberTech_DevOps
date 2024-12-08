@@ -33,11 +33,28 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Generate Allure Report') {
             steps {
                 dir('orderflow-backend') {
-                    sh 'docker build -t your-app .'
-                    sh 'docker run -d -p 80:80 your-app'
+                    sh 'mvn allure:report'
+                }
+                allure includeProperties: false, jdk: '', results: [[path: '**/allure-results']]
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                dir('orderflow-backend') {
+                    sh 'docker build -t maftuna09/my-app:latest .'
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh """
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                        docker push maftuna09/my-app:latest
+                    """
                 }
             }
         }
